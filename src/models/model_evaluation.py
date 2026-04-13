@@ -40,7 +40,7 @@ def main():
         clf = load_model(os.path.join("models", "model_gb"))
 
         # 2) Load features
-        test_csv = os.path.join("data", "processed", "test_bow.csv")
+        test_csv = os.path.join("data", "processed", "test_tfidf.csv")
         test_data = load_data(test_csv)
         logger.info("Test features loaded: %s", test_data.shape)
 

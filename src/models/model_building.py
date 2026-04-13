@@ -72,7 +72,7 @@ def main() -> None:
                     )
 
         # 2) Load training features
-        train_csv = os.path.join("data", "processed", "train_bow.csv")
+        train_csv = os.path.join("data", "processed", "train_tfidf.csv")
         train_data = load_data(train_csv)
         logger.info("Train features loaded: %s", train_data.shape)
 

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 from typing import Optional,Any, Dict
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.utils.validation import check_is_fitted
 from src.data.data_ingestion import load_params,load_data,save_data,get_logger
 
@@ -57,32 +57,32 @@ def main():
         X_test = seperate_col(test_data, "content")
         y_test = seperate_col(test_data, "sentiment")
 
-        # Apply Bag of Words (CountVectorizer)
-        vectorizer = CountVectorizer(max_features=max_features)
+        # Apply Tfidf (TfidfVectorizer)
+        vectorizer = TfidfVectorizer(max_features=max_features)
 
-        logger.info("Fitting CountVectorizer on train text...")
-        X_train_bow = vectorizer.fit_transform(X_train)
+        logger.info("Fitting TfidfVectorizer on train text...")
+        X_train_tfidf = vectorizer.fit_transform(X_train)
         logger.info(
             "Vectorized train: shape=%s, vocab_size=%d",
-            X_train_bow.shape, len(vectorizer.vocabulary_)
+            X_train_tfidf.shape, len(vectorizer.vocabulary_)
         )
 
         logger.info("Transforming test text with fitted vectorizer...")
-        X_test_bow = vectorizer.transform(X_test)
-        logger.info("Vectorized test: shape=%s", X_test_bow.shape)
+        X_test_tfidf = vectorizer.transform(X_test)
+        logger.info("Vectorized test: shape=%s", X_test_tfidf.shape)
 
-        # Convert BoW representations into DataFrames
-        train_df = pd.DataFrame(X_train_bow.toarray())
+        # Convert Tfidf representations into DataFrames
+        train_df = pd.DataFrame(X_train_tfidf.toarray())
         train_df['label'] = y_train
 
-        test_df = pd.DataFrame(X_test_bow.toarray())
+        test_df = pd.DataFrame(X_test_tfidf.toarray())
         test_df['label'] = y_test
 
         # Store the features in data/processed
         data_path = os.path.join("data", "processed")
 
-        save_data(data_path,train_df,test_df,'train_bow','test_bow')
-        logger.info("Saved BoW features to %s", os.path.abspath(data_path))
+        save_data(data_path,train_df,test_df,'train_tfidf','test_tfidf')
+        logger.info("Saved Tfidf features to %s", os.path.abspath(data_path))
 
         logger.info("Feature engineering completed successfully.")
 
