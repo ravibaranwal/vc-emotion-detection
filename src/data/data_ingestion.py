@@ -146,7 +146,7 @@ def process_data(df: pd.DataFrame) -> pd.DataFrame:
     
     #Encode target
     mapping = {"happiness": 1, "sadness": 0}
-    final_df.loc[:, "sentiment"] = final_df["sentiment"].map(mapping).astype("int64")
+    final_df["sentiment"] = final_df["sentiment"].map(mapping).astype("Int64")
 
     logger.info("Processed data shape: %s; class balance -> happiness(1)=%d, sadness(0)=%d",
                 final_df.shape,
